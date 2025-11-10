@@ -274,7 +274,16 @@ extension CodeScannerView {
                 captureSession!.addOutput(photoOutput)
                 metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
                 metadataOutput.metadataObjectTypes = parentView.codeTypes
-                metadataOutput.rectOfInterest = rectOfInterest
+                
+                let uiRect = self.rectOfInterest
+                let avRect = CGRect(
+                    x: uiRect.minY,
+                    y: 1.0 - uiRect.maxX,
+                    width: uiRect.height,
+                    height: uiRect.width
+                )
+                
+                metadataOutput.rectOfInterest = avRect
             } else {
                 didFail(reason: .badOutput)
                 return
