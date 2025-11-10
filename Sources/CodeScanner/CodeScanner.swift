@@ -83,6 +83,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
     public let scanInterval: Double
     public let showViewfinder: Bool
     public let requiresPhotoOutput: Bool
+    public let rectOfInterest: CGRect
     public var simulatedData = ""
     public var shouldVibrateOnSuccess: Bool
     public var isTorchOn: Bool
@@ -98,6 +99,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
         scanInterval: Double = 2.0,
         showViewfinder: Bool = false,
         requiresPhotoOutput: Bool = true,
+        rectOfInterest: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1),
         simulatedData: String = "",
         shouldVibrateOnSuccess: Bool = true,
         isTorchOn: Bool = false,
@@ -119,10 +121,11 @@ public struct CodeScannerView: UIViewControllerRepresentable {
         self.isGalleryPresented = isGalleryPresented
         self.videoCaptureDevice = videoCaptureDevice
         self.completion = completion
+        self.rectOfInterest = rectOfInterest
     }
 
     public func makeUIViewController(context: Context) -> ScannerViewController {
-        return ScannerViewController(showViewfinder: showViewfinder, parentView: self)
+        return ScannerViewController(showViewfinder: showViewfinder, rectOfInterest: rectOfInterest, parentView: self)
     }
 
     public func updateUIViewController(_ uiViewController: ScannerViewController, context: Context) {

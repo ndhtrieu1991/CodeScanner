@@ -22,6 +22,7 @@ extension CodeScannerView {
         var didFinishScanning = false
         var lastTime = Date(timeIntervalSince1970: 0)
         private let showViewfinder: Bool
+        private let rectOfInterest: CGRect
         
         let fallbackVideoCaptureDevice = AVCaptureDevice.default(for: .video)
         
@@ -34,14 +35,16 @@ extension CodeScannerView {
             }
         }
 
-        public init(showViewfinder: Bool = false, parentView: CodeScannerView) {
+        public init(showViewfinder: Bool = false, rectOfInterest: CGRect, parentView: CodeScannerView) {
             self.parentView = parentView
             self.showViewfinder = showViewfinder
+            self.rectOfInterest = rectOfInterest
             super.init(nibName: nil, bundle: nil)
         }
 
         required init?(coder: NSCoder) {
             self.showViewfinder = false
+            self.rectOfInterest = CGRect(x: 0, y: 0, width: 1, height: 1)
             super.init(coder: coder)
         }
         
@@ -271,6 +274,7 @@ extension CodeScannerView {
                 captureSession!.addOutput(photoOutput)
                 metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
                 metadataOutput.metadataObjectTypes = parentView.codeTypes
+                metadataOutput.rectOfInterest = rectOfInterest
             } else {
                 didFail(reason: .badOutput)
                 return
